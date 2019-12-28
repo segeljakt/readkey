@@ -1,6 +1,7 @@
 #[allow(dead_code)]
 
 /// Carbon's virtual keycodes, found [here](https://snipplr.com/view/42797/).
+#[derive(Clone, Copy)]
 #[repr(u16)]
 pub enum Keycode {
   A                      = 0x00,
@@ -134,6 +135,7 @@ extern {
 impl Keycode {
   /// Returns true if key is currently pressed.
   /// ```
+  /// use readkey::Keycode;
   /// loop {
   ///   println!("State of Up key: {}, ", Keycode::Up.is_pressed());
   /// }
