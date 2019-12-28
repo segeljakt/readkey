@@ -1,13 +1,11 @@
 [package]
 name = "readkey"
-version = "0.1.6"
+version = "0.1.7"
 authors = ["Klas Segeljakt <klasseg@kth.se>"]
 readme = "README.md"
 repository = "https://github.com/segeljakt/readkey"
 homepage = "https://github.com/segeljakt/readkey"
 description = """
-A very small library for finding out if a key is currently pressed. Currently only supports macOS.
+A very small library for finding out if a key is currently pressed on macOS.
 """
 license = "MIT"
-
-[build-dependencies]

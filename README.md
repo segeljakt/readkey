@@ -1,6 +1,6 @@
 # readkey
 
-A very small library for finding out if a key is currently pressed. Currently only supports macOS.
+A very small library for finding out if a key is currently pressed on macOS.
 
 # Example usage
 
@@ -16,3 +16,6 @@ fn main() {
 }
 ```
 
+# Related
+
+[readmouse](https://crates.io/crates/readkey) - Read the mouse location on macOS.
