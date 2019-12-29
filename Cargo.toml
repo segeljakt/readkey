@@ -1,6 +1,6 @@
 [package]
 name = "readkey"
-version = "0.1.7"
+version = "0.2.1"
 authors = ["Klas Segeljakt <klasseg@kth.se>"]
 readme = "README.md"
 repository = "https://github.com/segeljakt/readkey"

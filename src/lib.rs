@@ -1,4 +1,12 @@
-#[allow(dead_code)]
+#![allow(unused)]
+#![allow(dead_code)]
+
+#[repr(i32)]
+enum CGEventSourceStateID {
+    Private = -1,
+    Combined = 0,
+    System = 1,
+}
 
 /// Carbon's virtual keycodes, found [here](https://snipplr.com/view/42797/).
 #[derive(Clone, Copy)]
@@ -129,7 +137,7 @@ pub enum Keycode {
 
 #[link(name = "AppKit", kind = "framework")]
 extern {
-  fn CGEventSourceKeyState(state: i32, keycode: u16) -> bool;
+  fn CGEventSourceKeyState(state: CGEventSourceStateID, keycode: Keycode) -> bool;
 }
 
 impl Keycode {
@@ -137,13 +145,13 @@ impl Keycode {
   /// ```
   /// use readkey::Keycode;
   /// loop {
-  ///   println!("State of Up key: {}, ", Keycode::Up.is_pressed());
+  ///   println!("State of Up key: {:?}, ", Keycode::Up.is_pressed());
   /// }
   /// ```
   #[inline(always)]
   pub fn is_pressed(self) -> bool {
     unsafe {
-      return CGEventSourceKeyState(1, self as u16);
+      return CGEventSourceKeyState(CGEventSourceStateID::Combined, self);
     }
   }
 }
