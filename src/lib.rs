@@ -8,6 +8,15 @@ enum CGEventSourceStateID {
     System = 1,
 }
 
+const LSHIFT: u32 = (1 << 1) + (1 << 17);
+const LCTRL: u32 = 1 + (1 << 18);
+const LOPTION: u32 = (1 << 5) + (1 << 19);
+const LCOMMAND: u32 = (1 << 3) + (1 << 20);
+const RSHIFT: u32 = (1 << 2) + (1 << 17);
+const RCTRL: u32 = (1 << 13) + (1 << 18);
+const ROPTION: u32 = (1 << 6) + (1 << 19);
+const RCOMMAND: u32 = (1 << 4) + (1 << 20);
+
 /// Carbon's virtual keycodes, found [here](https://snipplr.com/view/42797/).
 #[derive(Clone, Copy)]
 #[repr(u16)]
@@ -133,11 +142,14 @@ pub enum Keycode {
   KeypadComma            = 0x5F,
   Eisu                   = 0x66,
   Kana                   = 0x68,
+  /// Something missing
+  RightCommand           = 0x90,
 }
 
 #[link(name = "AppKit", kind = "framework")]
 extern {
   fn CGEventSourceKeyState(state: CGEventSourceStateID, keycode: Keycode) -> bool;
+  fn CGEventSourceFlagsState(state: CGEventSourceStateID) -> u32;
 }
 
 impl Keycode {
@@ -151,7 +163,18 @@ impl Keycode {
   #[inline(always)]
   pub fn is_pressed(self) -> bool {
     unsafe {
-      return CGEventSourceKeyState(CGEventSourceStateID::Combined, self);
+      let m = CGEventSourceFlagsState(CGEventSourceStateID::Combined);
+      match self {
+        Keycode::Command => m & LCOMMAND == LCOMMAND,
+        Keycode::Shift => m & LSHIFT == LSHIFT,
+        Keycode::Option => m & LOPTION == LOPTION,
+        Keycode::Control => m & LCTRL == LCTRL,
+        Keycode::RightCommand => m & RCOMMAND == RCOMMAND,
+        Keycode::RightShift => m & RSHIFT == RSHIFT,
+        Keycode::RightOption => m & ROPTION == ROPTION,
+        Keycode::RightControl => m & RCTRL == RCTRL,
+        _ => CGEventSourceKeyState(CGEventSourceStateID::Combined, self),
+      }
     }
   }
 }
